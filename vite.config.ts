@@ -10,4 +10,9 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    allowedHosts: [
+      'task4--auth-dashboard-deploy--t6yfttf5ytbl.code.run'
+    ]
+  },
 })
