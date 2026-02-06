@@ -1,16 +1,14 @@
-import { useState } from 'react'
+import { Provider } from "react-redux";
+import { store } from "@/app/store.ts";
+import { Router } from "@/app/Router.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App= () => {
 
   return (
     <>
-      <h1>Auth + Dashboard</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <Provider store={store}>
+        <Router />
+      </Provider>
     </>
   )
 }
