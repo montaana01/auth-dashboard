@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'node:path';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,9 +11,17 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/',
+  build: {
+    outDir: 'dist',
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(import.meta.dirname, './src'),
+    },
+  },
   server: {
-    allowedHosts: [
-      'task4--auth-dashboard-deploy--t6yfttf5ytbl.code.run'
-    ]
+    port: 8080,
+    open: true,
   },
 })
