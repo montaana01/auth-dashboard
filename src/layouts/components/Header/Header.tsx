@@ -3,10 +3,13 @@ import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/app/store.ts";
 import { ROUTES } from "@/app/config/routes.ts";
-import { logout } from "@/shared/store/auth/authSlice.ts";
+import { setAuth } from "@/shared/store/auth/authSlice.ts";
+import { useLogoutMutation } from "@/features/auth/api/authApi.ts";
+import {useSnackbar} from "notistack";
 
 const buttonSx = {
   textTransform: "uppercase",
+  fontWeight: 700,
   borderRadius: 1.5,
   px: 1.25,
   "&.active": { bgcolor: "rgba(236,254,255,0.18)" },
@@ -14,14 +17,26 @@ const buttonSx = {
 };
 
 export const Header = () => {
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth)
-  const dispatch = useDispatch()
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [logoutApi] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi().unwrap();
+    } catch (error) {
+      enqueueSnackbar(`Something went wrong while logging out: ${error}`, { variant: 'error' });
+      return;
+    }
+    dispatch(setAuth(false));
+  };
 
   const NAV_LINKS = isAuth
     ? [
-      { id: "USERS", to: ROUTES.USERS, label: "users" },
-      { id: "ABOUT", to: ROUTES.ABOUT, label: "about" },
-    ]
+        { id: "USERS", to: ROUTES.USERS, label: "users" },
+        { id: "ABOUT", to: ROUTES.ABOUT, label: "about" },
+      ]
     : [{ id: "ABOUT", to: ROUTES.ABOUT, label: "about" }];
 
   return (
@@ -81,7 +96,7 @@ export const Header = () => {
                 <Box>
                   <Stack direction="row" spacing={1}>
                     {isAuth ? (
-                      <Button onClick={() => dispatch(logout())} color="inherit">
+                      <Button onClick={handleLogout} color="inherit">
                         Logout
                       </Button>
                     ) : (
