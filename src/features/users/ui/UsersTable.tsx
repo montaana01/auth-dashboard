@@ -45,7 +45,9 @@ export const UsersTable = () => {
         initialState={{pagination: {paginationModel}}}
         pageSizeOptions={[5, 10]}
         checkboxSelection
-        sx={{border: 0}}
+        disableRowSelectionOnClick
+        rowSelectionModel={{ type: 'include', ids: new Set() }}
+        sx={{ border: 0 }}
       />
     </Paper>
   );
