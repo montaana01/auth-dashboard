@@ -12,8 +12,9 @@ export const Layout = () => {
         flexGrow={1}
         display="flex"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
+        minHeight="calc(100vh - 160px)"
       >
         <Outlet />
       </Box>
