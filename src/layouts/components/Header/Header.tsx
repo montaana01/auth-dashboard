@@ -5,7 +5,6 @@ import type { RootState } from "@/app/store.ts";
 import { ROUTES } from "@/app/config/routes.ts";
 import { setAuth } from "@/shared/store/auth/authSlice.ts";
 import { useLogoutMutation } from "@/features/auth/api/authApi.ts";
-import {useSnackbar} from "notistack";
 
 const buttonSx = {
   textTransform: "uppercase",
@@ -19,16 +18,10 @@ const buttonSx = {
 export const Header = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const [logoutApi] = useLogoutMutation();
 
   const handleLogout = async () => {
-    try {
-      await logoutApi().unwrap();
-    } catch (error) {
-      enqueueSnackbar(`Something went wrong while logging out: ${error}`, { variant: 'error' });
-      return;
-    }
+    await logoutApi().unwrap();
     dispatch(setAuth(false));
   };
 
