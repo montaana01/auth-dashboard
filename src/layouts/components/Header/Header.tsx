@@ -21,8 +21,8 @@ export const Header = () => {
   const [logoutApi] = useLogoutMutation();
 
   const handleLogout = async () => {
-    await logoutApi().unwrap();
     dispatch(setAuth(false));
+    await logoutApi().unwrap();
   };
 
   const NAV_LINKS = isAuth
