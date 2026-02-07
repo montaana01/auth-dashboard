@@ -9,8 +9,8 @@ const buttonSx = {
   textTransform: "uppercase",
   borderRadius: 1.5,
   px: 1.25,
-  "&.active": {bgcolor: "rgba(255,255,255,0.14)"},
-  "&:hover": {bgcolor: "rgba(255,255,255,0.10)"}
+  "&.active": { bgcolor: "rgba(236,254,255,0.18)" },
+  "&:hover": { bgcolor: "rgba(236,254,255,0.13)" },
 };
 
 export const Header = () => {
@@ -29,21 +29,52 @@ export const Header = () => {
       position="static"
       elevation={0}
       sx={{
-        color: "common.white",
-        borderBottom: 1,
-        borderColor: "grey.800",
-        bgcolor: "grey.900",
+        position: "relative",
+        overflow: "hidden",
+        color: "#ecfeff",
+        borderBottom: "1px solid rgba(204,251,241,0.22)",
+        background: "radial-gradient(150% 120% at 0% 0%, #164e63 0%, #0f172a 52%, #020617 100%)",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          width: 220,
+          height: 220,
+          borderRadius: "50%",
+          top: -130,
+          right: -80,
+          bgcolor: "rgba(245, 158, 11, 0.25)",
+          filter: "blur(10px)",
+          pointerEvents: "none",
+        },
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          width: 180,
+          height: 180,
+          borderRadius: "50%",
+          bottom: -120,
+          left: 90,
+          bgcolor: "rgba(34, 197, 94, 0.16)",
+          filter: "blur(10px)",
+          pointerEvents: "none",
+        },
       }}
     >
       <Toolbar
         sx={{
           height: 80,
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Container>
           <Box>
             <Grid container justifyContent="space-between">
-              <Typography variant="h6" component="h2" sx={{ m: 0, whiteSpace: "nowrap" }}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ m: 0, whiteSpace: "nowrap", fontWeight: 800, letterSpacing: "-0.01em" }}
+              >
                 Auth Dashboard
               </Typography>
               <Grid container alignItems="center">
@@ -84,5 +115,5 @@ export const Header = () => {
         </Container>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
