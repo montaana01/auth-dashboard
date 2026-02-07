@@ -22,16 +22,55 @@ const AuthGuard = ({children}: { children: ReactNode }) => {
   return children;
 }
 
+const GuestGuard = ({ children }: { children: ReactNode }) => {
+  const { enqueueSnackbar } = useSnackbar()
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  if (isAuth) {
+    enqueueSnackbar('You are already authorized', { variant: 'success' });
+    return <Navigate to={ROUTES.USERS} replace />;
+  }
+  return children;
+};
+
 export const Router = () => {
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
+            <Route
+              index
+              element={<Navigate to={isAuth ? ROUTES.USERS : ROUTES.SIGN_IN} replace />}
+            />
+
             <Route element={<AuthLayout />}>
-              <Route path={ROUTES.AUTH} element={<LoginPage />} />
-              <Route path={ROUTES.SIGN_IN} element={<LoginPage />} />
-              <Route path={ROUTES.SIGN_UP} element={<RegisterPage />} />
+              <Route
+                path={ROUTES.AUTH}
+                element={
+                  <GuestGuard>
+                    <LoginPage />
+                  </GuestGuard>
+                }
+              />
+              <Route
+                path={ROUTES.SIGN_IN}
+                element={
+                  <GuestGuard>
+                    <LoginPage />
+                  </GuestGuard>
+                }
+              />
+              <Route
+                path={ROUTES.SIGN_UP}
+                element={
+                  <GuestGuard>
+                    <RegisterPage />
+                  </GuestGuard>
+                }
+              />
             </Route>
             <Route path={ROUTES.ABOUT} element={<AboutPage />} />
             <Route path={ROUTES.USERS} element={
