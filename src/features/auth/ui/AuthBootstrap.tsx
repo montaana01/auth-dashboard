@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '@/shared/store/auth/authSlice.ts';
+import { login, logout } from '@/shared/store/auth/authSlice.ts';
 import { useLazyMeQuery } from '@/features/auth/api/authApi.ts';
 
 export const AuthBootstrap = () => {
@@ -14,12 +14,12 @@ export const AuthBootstrap = () => {
       .unwrap()
       .then((data) => {
         if (!alive) return;
-        if (data && data.ok === true) dispatch(setAuth(true));
-        else dispatch(setAuth(false));
+        if (data && data.ok === true) dispatch(login(data.user.email));
+        else dispatch(logout());
       })
       .catch(() => {
         if (!alive) return;
-        dispatch(setAuth(false));
+        dispatch(logout());
       });
 
     return () => {

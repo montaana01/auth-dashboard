@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/app/store.ts";
 import { ROUTES } from "@/app/config/routes.ts";
-import { setAuth } from "@/shared/store/auth/authSlice.ts";
+import { logout } from "@/shared/store/auth/authSlice.ts";
 import { useLogoutMutation } from "@/features/auth/api/authApi.ts";
 
 const buttonSx = {
@@ -17,11 +17,12 @@ const buttonSx = {
 
 export const Header = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const email = useSelector((state: RootState) => state.auth.email);
   const dispatch = useDispatch();
   const [logoutApi] = useLogoutMutation();
 
   const handleLogout = async () => {
-    dispatch(setAuth(false));
+    dispatch(logout());
     await logoutApi().unwrap();
   };
 
@@ -89,9 +90,14 @@ export const Header = () => {
                 <Box>
                   <Stack direction="row" spacing={1}>
                     {isAuth ? (
-                      <Button onClick={handleLogout} color="inherit">
-                        Logout
-                      </Button>
+                      <>
+                        <Typography variant="body2" sx={{ alignSelf: "center", opacity: 0.9, px: 1 }}>
+                          Hello, {email ?? "user"}
+                        </Typography>
+                        <Button onClick={handleLogout} color="inherit">
+                          Logout
+                        </Button>
+                      </>
                     ) : (
                       <>
                         <Button component={NavLink} to={ROUTES.SIGN_IN} color="inherit" sx={buttonSx}>

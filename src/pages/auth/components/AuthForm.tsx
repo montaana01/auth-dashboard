@@ -3,7 +3,7 @@ import type { RootState } from '@/app/store.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { login, setAuth } from '@/shared/store/auth/authSlice.ts';
+import { login, logout } from '@/shared/store/auth/authSlice.ts';
 import { ROUTES } from '@/app/config/routes.ts';
 import { useSignInMutation, useSignUpMutation } from '@/features/auth/api/authApi.ts';
 import {
@@ -67,15 +67,15 @@ export const AuthForm = ({type}: AuthFormProps) => {
       try {
         const resp = await signIn({ email: e, password }).unwrap();
         if (resp.ok) {
-          dispatch(login());
+          dispatch(login(resp.user.email));
           enqueueSnackbar(resp.message || 'Signed in', { variant: 'success' });
           navigate(ROUTES.USERS, { replace: true });
           return;
         }
-        dispatch(setAuth(false));
+        dispatch(logout());
         enqueueSnackbar(resp.message || 'Sign in failed', { variant: 'error' });
       } catch (error) {
-        dispatch(setAuth(false));
+        dispatch(logout());
         enqueueSnackbar(getApiErrorMessage(error, 'Sign in failed'), { variant: 'error' });
       }
       return;
