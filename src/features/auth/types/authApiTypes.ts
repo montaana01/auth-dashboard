@@ -52,3 +52,14 @@ export type LogoutResponse =
   message: string;
 }
   | ApiErrorType;
+
+export type VerifyEmailRequest = {
+  token: string;
+};
+
+export type VerifyEmailResponse =
+  | {
+  ok: true;
+  message: string;
+}
+  | ApiErrorType;

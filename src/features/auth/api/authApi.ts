@@ -4,7 +4,9 @@ import type {
   LogoutResponse,
   MeResponse,
   SignInResponse,
-  SignUpResponse
+  SignUpResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse
 } from '../types/authApiTypes';
 
 export const authApi = baseApi.injectEndpoints({
@@ -35,8 +37,20 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
     }),
+    verifyEmail: build.query<VerifyEmailResponse, VerifyEmailRequest>({
+      query: ({ token }) => ({
+        url: `/auth/verify-email?token=${encodeURIComponent(token)}`,
+        method: 'GET',
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useSignUpMutation, useSignInMutation, useLazyMeQuery, useLogoutMutation } = authApi;
+export const {
+  useSignUpMutation,
+  useSignInMutation,
+  useLazyMeQuery,
+  useLogoutMutation,
+  useVerifyEmailQuery,
+} = authApi;

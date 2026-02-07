@@ -9,6 +9,7 @@ import { ROUTES } from "@/app/config/routes.ts";
 import { AuthLayout } from "@/layouts/AuthLayout.tsx";
 import { LoginPage } from "@/pages/auth/LoginPage.tsx";
 import { RegisterPage } from "@/pages/auth/RegisterPage.tsx";
+import { VerifyEmailPage } from "@/pages/auth/VerifyEmailPage.tsx";
 import { NotFoundPage } from "@/pages/notFound/NotFoundPage.tsx";
 import { AboutPage } from "@/pages/about/AboutPage.tsx";
 
@@ -72,6 +73,7 @@ export const Router = () => {
                 }
               />
             </Route>
+            <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmailPage />}/>
             <Route path={ROUTES.ABOUT} element={<AboutPage />} />
             <Route path={ROUTES.USERS} element={
               <AuthGuard>
