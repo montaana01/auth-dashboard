@@ -4,6 +4,7 @@ const baseUrl = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
+  tagTypes: ['UsersTable'],
   baseQuery: fetchBaseQuery({
     baseUrl,
     credentials: 'include',
