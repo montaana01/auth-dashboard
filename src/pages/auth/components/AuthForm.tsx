@@ -18,6 +18,7 @@ import {
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
 import { useSnackbar } from 'notistack';
+import {getApiErrorMessage} from "@/shared/helpers/constants.ts";
 
 function validateEmail(email: string): boolean {
   return email.trim().length > 0 && email.includes('@');
@@ -63,25 +64,34 @@ export const AuthForm = ({type}: AuthFormProps) => {
     }
 
     if (type === 'login') {
-      const resp = await signIn({ email: e, password }).unwrap();
-      if (resp.ok) {
-        dispatch(login());
-        enqueueSnackbar(resp.message || 'Signed in', { variant: 'success' });
-        navigate(ROUTES.USERS, { replace: true });
-      } else {
+      try {
+        const resp = await signIn({ email: e, password }).unwrap();
+        if (resp.ok) {
+          dispatch(login());
+          enqueueSnackbar(resp.message || 'Signed in', { variant: 'success' });
+          navigate(ROUTES.USERS, { replace: true });
+          return;
+        }
         dispatch(setAuth(false));
         enqueueSnackbar(resp.message || 'Sign in failed', { variant: 'error' });
+      } catch (error) {
+        dispatch(setAuth(false));
+        enqueueSnackbar(getApiErrorMessage(error, 'Sign in failed'), { variant: 'error' });
       }
       return;
     }
 
     if (type === 'register') {
-      const resp = await signUp({ email: e, password }).unwrap();
-      if (resp.ok) {
-        enqueueSnackbar(resp.message || 'Registered', { variant: 'success' });
-        navigate(ROUTES.SIGN_IN, { replace: true });
-      } else {
-        enqueueSnackbar(resp.message || 'Registration failed', { variant: 'error' });
+      try {
+        const resp = await signUp({ email: e, password }).unwrap();
+        if (resp.ok) {
+          enqueueSnackbar(resp.message || 'Registered', { variant: 'success' });
+          navigate(ROUTES.SIGN_IN, { replace: true });
+        } else {
+          enqueueSnackbar(resp.message || 'Registration failed', { variant: 'error' });
+        }
+      } catch (error) {
+        enqueueSnackbar(getApiErrorMessage(error, 'Registration failed'), { variant: 'error' });
       }
     }
   };

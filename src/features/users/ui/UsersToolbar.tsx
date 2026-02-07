@@ -1,6 +1,4 @@
 import { useMemo, useState } from 'react';
-import type { SerializedError } from '@reduxjs/toolkit';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/app/store.ts';
 import { clearSelectedIds } from '@/features/users/model/usersSelectionSlice.ts';
@@ -17,16 +15,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 import type {ActionSuccess, Snack} from "@/features/users/types/usersTableTypes.ts";
+import {isFetchBaseQueryError, isSerializedError} from "@/shared/helpers/constants.ts";
 
-const isFetchBaseQueryError = (error: unknown): error is FetchBaseQueryError => {
-  return typeof error === 'object' && error !== null && 'status' in error;
-};
-
-const isSerializedError = (error: unknown): error is SerializedError => {
-  return typeof error === 'object' && error !== null && (
-    'message' in error || 'stack' in error || 'name' in error || 'code' in error
-  );
-};
 
 const getErrorMessage = (error: unknown, fallback: string) => {
   if (isFetchBaseQueryError(error)) {
