@@ -1,4 +1,4 @@
-import {BrowserRouter, Navigate, Route, Routes} from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import type { ReactNode } from "react";
 import type { RootState } from "@/app/store.ts";
 import { useSelector } from "react-redux";
