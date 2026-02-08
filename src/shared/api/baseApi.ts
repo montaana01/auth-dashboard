@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { logout } from '@/shared/store/auth/authSlice.ts';
 
-const baseUrl = String(import.meta.env.VITE_API_BASE_URL || '').trim();
+const baseUrl = '/api';
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl,
@@ -19,7 +19,7 @@ const baseQueryWithAutoLogout: BaseQueryFn<string | FetchArgs, unknown, FetchBas
   extraOptions,
 ) => {
   const result = await rawBaseQuery(args, api, extraOptions);
-  const status = (result as any)?.error?.status;
+  const status = result?.error?.status;
   if (status === 401 || status === 403) {
     api.dispatch(logout());
   }
